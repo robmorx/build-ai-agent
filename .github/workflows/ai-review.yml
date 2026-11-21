@@ -1,0 +1,33 @@
+name: AI Agent PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v7.0.1
+
+      - name: Configurar Python
+        uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.14'
+
+      - name: Instalar dependencias
+        run: pip install requests
+
+      - name: Ejecutar agente IA en la PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
+          AI_TOKEN: ${{ github.token }}
+          AI_BASE_URL: ${{ secrets.AI_BASE_URL }}
+        run: python .github/scripts/agent_review.py

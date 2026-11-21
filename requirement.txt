@@ -1,0 +1,6 @@
+langchain
+ddgs
+wikipedia
+python-dotenv
+pydantic
+requests
